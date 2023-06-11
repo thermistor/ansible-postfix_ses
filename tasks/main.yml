@@ -1,0 +1,58 @@
+---
+- name: Install packages for postfix
+  ansible.builtin.apt:
+    pkg:
+      - postfix
+      - libsasl2-modules
+    state: present
+
+- name: Setup a sending only mail server via main.cf
+  ansible.builtin.template:
+    src: main.cf.j2
+    dest: /etc/postfix/main.cf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Restart Postfix
+
+- name: Install /etc/mailname
+  ansible.builtin.copy:
+    content: "{{ postfix_ses_mailname }}{{ '\n' }}"
+    dest: /etc/mailname
+    owner: root
+    group: root
+    mode: 0644
+  tags:
+    - mailname
+    - hostname
+
+- name: Create sasl_password file
+  ansible.builtin.template:
+    src: sasl_passwd.j2
+    dest: /etc/postfix/sasl_passwd
+
+- name: Execute postmap command on sasl_passwd
+  ansible.builtin.command: "postmap hash:/etc/postfix/sasl_passwd"
+  notify: Restart Postfix
+
+- name: Remove sasl_passwd file
+  ansible.builtin.file:
+    path: postfix_ses_sasl_passwd
+    state: absent
+
+- name: Change permission of /etc/postfix/sasl_passwd.db
+  ansible.builtin.file:
+    path: /etc/postfix/sasl_passwd.db
+    mode: '0600'
+
+- name: configure /etc/aliases to forward root's email
+  ansible.builtin.lineinfile:
+    dest: /etc/aliases
+    regexp: "^root:.*"
+    line: "root:{{ postfix_ses_postmaster_email }}"
+  register: aliases
+
+- name: rebuild /etc/aliases
+  ansible.builtin.command: /usr/bin/newaliases
+  when: aliases is changed

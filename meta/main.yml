@@ -1,0 +1,22 @@
+galaxy_info:
+  role_name: postfix_ses
+  namespace: thermistor
+  author: Weston Triemstra
+  description: Configure Postfix to use AWS SES
+  company: Netsign
+
+  license: MIT
+
+  min_ansible_version: 2.9
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - jammy
+
+  galaxy_tags:
+    - postfix
+    - aws
+    - ses
+
+dependencies: []
