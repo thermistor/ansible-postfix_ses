@@ -10,13 +10,13 @@ Ubuntu
 
 These variables must be provided:
 
-`postfix_ses_postmaster_email` the email address for the postmaster of the server.
-`postfix_ses_identity` an SES identity in form of an email or domain
-`postfix_ses_mailname` host that emails will come from in headers
-`postfix_ses_canonical_sender_email` all emails will come from this address, it should be set up as verified at SES.
-`postfix_ses_host` hostname of ses service
-`postfix_ses_username` username for ses service
-`postfix_ses_password` password for ses service
+* `postfix_ses_postmaster_email` the email address for the postmaster of the server.
+* `postfix_ses_identity` an SES identity in form of an email or domain
+* `postfix_ses_mailname` host that emails will come from in headers
+* `postfix_ses_canonical_sender_email` all emails will come from this address, it should be set up as verified at SES.
+* `postfix_ses_host` hostname of ses service
+* `postfix_ses_username` username for ses service
+* `postfix_ses_password` password for ses service
 
 ## Dependencies
 
