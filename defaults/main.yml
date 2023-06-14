@@ -1,3 +1,4 @@
 ---
 postfix_ses_smtp_tls_loglevel: 1
 postfix_ses_port: 587
+postfix_ses_compatibility_level: 3.6
